@@ -20,7 +20,6 @@ class ReportSpider(scrapy.Spider):
 
     def parse_price(self, response):
 
-        # Ячминь
         price = response.xpath('//div[@class="culture_head collapsed"]/descendant::text()').extract()
         clean_price = ''.join([i.strip() for i in price if i])
 
