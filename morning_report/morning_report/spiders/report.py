@@ -29,17 +29,17 @@ class ReportSpider(scrapy.Spider):
 
         # uah-usd
         buy = response.xpath(
-            "//li[@data-title='Покупка']//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-num')]/text()"
+            """//li[@data-title='Покупка']//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-num')]/text()"""
         ).extract_first()
         move_buy = response.xpath(
-            "//li[@data-title='Покупка']//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-move')]/span/text()"
+            """//li[@data-title='Покупка']//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-move')]/span/text()"""
         ).extract_first()
 
         sell = response.xpath(
-            "//li[@data-title='Продажа']//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-num')]/text()"
+            """//li[@data-title='Продажа']//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-num')]/text()"""
         ).extract_first()
         move_sell = response.xpath(
-            "//li[@data-title='Продажа']//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-move')]/text()"
+            """//li[@data-title='Продажа']//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-move')]/text()"""
         ).extract_first().strip("&nbsp;")
 
         try:
