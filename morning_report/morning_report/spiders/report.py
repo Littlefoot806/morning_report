@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from scrapy.http import Request, FormRequest
+import urllib.parse
 
 
 class ReportSpider(scrapy.Spider):
@@ -23,7 +24,7 @@ class ReportSpider(scrapy.Spider):
 
         price = response.xpath('//div[@class="culture_head collapsed"]/descendant::text()').extract()
         clean_price = ''.join([i.strip() for i in price if i])
-
+        clean_price = urllib.parse.quote(clean_price)
         yield Request(self.url_to_send_message.format(clean_price), dont_filter=True, callback=self.ok)
 
     def parse_usd(self, response):
