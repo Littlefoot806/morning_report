@@ -24,7 +24,8 @@ class ReportSpider(scrapy.Spider):
 
         price = response.xpath('//div[@class="culture_head collapsed"]/descendant::text()').extract()
         clean_price = ''.join([i.strip() for i in price if i])
-        clean_price = urllib.quote(clean_price)
+        clean_price = clean_price.encode("UTF-8")
+        # clean_price = urllib.quote(clean_price)
         yield Request(self.url_to_send_message.format(clean_price), dont_filter=True, callback=self.ok)
 
     def parse_usd(self, response):
@@ -38,7 +39,7 @@ class ReportSpider(scrapy.Spider):
             """//li[@class="pair__block"][2]//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-num')]/text()"""
         ).extract_first()
         
-        result = "$$$\nAПокупка: {buy}\nПродажа: {sell}".format(buy=buy, sell=sell)
+        result = "$$$\nПокупка: {buy}\nПродажа: {sell}".format(buy=buy, sell=sell)
         result = urllib.quote(result)
         yield Request(self.url_to_send_message.format(result), dont_filter=True, callback=self.ok)
 
