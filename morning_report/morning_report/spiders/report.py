@@ -42,7 +42,7 @@ class ReportSpider(scrapy.Spider):
         ).extract_first()
         move_sell = response.xpath(
             """//li[@class="pair__block"][2]//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-move')]/span/text()"""
-        ).extract_first().strip("&nbsp;")
+        ).extract_first()
 
         try:
             move_buy = int(move_buy)
