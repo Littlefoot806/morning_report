@@ -31,17 +31,17 @@ class ReportSpider(scrapy.Spider):
 
         # uah-usd
         buy = response.xpath(
-            """//li[@data-title='Покупка']//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-num')]/text()"""
+            """//li[@class="pair__block"][1]//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-num')]/text()"""
         ).extract_first()
         move_buy = response.xpath(
-            """//li[@data-title='Покупка']//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-move')]/span/text()"""
+            """//li[@class="pair__block"][1]//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-move')]/span/text()"""
         ).extract_first()
 
         sell = response.xpath(
-            """//li[@data-title='Продажа']//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-num')]/text()"""
+            """//li[@class="pair__block"][2]//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-num')]/text()"""
         ).extract_first()
         move_sell = response.xpath(
-            """//li[@data-title='Продажа']//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-move')]/text()"""
+            """//li[@class="pair__block"][2]//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-move')]/span/text()"""
         ).extract_first().strip("&nbsp;")
 
         try:
@@ -55,6 +55,7 @@ class ReportSpider(scrapy.Spider):
             move_sell = 0
 
         result = "$$$%0AПокупка: {buy}%0AИзменение за день: {move_buy}%0AПродажа: {sell}%0AИзменение за день: {move_sell}".format(buy=buy, move_buy=move_buy, sell=sell, move_sell=move_sell)
+        result = = urllib.quote(result)
         yield Request(self.url_to_send_message.format(result), dont_filter=True, callback=self.ok)
 
     def ok(self, response):
