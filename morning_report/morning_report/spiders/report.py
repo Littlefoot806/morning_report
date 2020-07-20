@@ -55,7 +55,7 @@ class ReportSpider(scrapy.Spider):
             move_sell = 0
 
         result = "$$$%0AПокупка: {buy}%0AИзменение за день: {move_buy}%0AПродажа: {sell}%0AИзменение за день: {move_sell}".format(buy=buy, move_buy=move_buy, sell=sell, move_sell=move_sell)
-        result = = urllib.quote(result)
+        result = urllib.quote(result)
         yield Request(self.url_to_send_message.format(result), dont_filter=True, callback=self.ok)
 
     def ok(self, response):
