@@ -38,7 +38,7 @@ class ReportSpider(scrapy.Spider):
             """//li[@class="pair__block"][2]//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-num')]/text()"""
         ).extract_first()
         
-        result = "$$$\nAПокупка: {buy}\nПродажа: {sell}".format(buy=buy, move_buy=move_buy, sell=sell, move_sell=move_sell)
+        result = "$$$\nAПокупка: {buy}\nПродажа: {sell}".format(buy=buy, sell=sell)
         result = urllib.quote(result)
         yield Request(self.url_to_send_message.format(result), dont_filter=True, callback=self.ok)
 
