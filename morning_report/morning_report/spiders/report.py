@@ -41,6 +41,18 @@ class ReportSpider(scrapy.Spider):
 
         yield Request(self.url_to_send_message.format(result), dont_filter=True, callback=self.ok)
 
+    def parse_prometey(self, response):
+
+        price = "".join(response.xpath(
+            """//div[@class="priceblock"][1]//div[contains(@class, "coin")][last()]//div[contains(@class,"coin_title")]/text()"""
+        ).extract())
+
+        clean_price = "Prometey:\nЯчмінь - " + \
+            price.split(",")[0].strip().encode("UTF-8")
+        # result = clean_price
+
+        yield Request(self.url_to_send_message.format(result), dont_filter=True, callback=self.ok)
+
     def parse_usd(self, response):
 
         # uah-usd
@@ -71,17 +83,6 @@ class ReportSpider(scrapy.Spider):
         result = "UAH-EUR\nПокупка: {buy}\nПродажа: {sell}".format(
             buy=buy, sell=sell)
         result = urllib.quote(result)
-        yield Request(self.url_to_send_message.format(result), dont_filter=True, callback=self.ok)
-
-    def parse_prometey(self, response):
-
-        price = "".join(response.xpath(
-            """//div[@class="priceblock"][1]//div[contains(@class, "coin")][last()]//div[contains(@class,"coin_title")]/text()"""
-        ).extract())
-
-        clean_price = "Prometey:\nЯчмінь - " + price.split(",")[0].strip()
-        result = clean_price.encode("UTF-8")
-
         yield Request(self.url_to_send_message.format(result), dont_filter=True, callback=self.ok)
 
     def ok(self, response):
