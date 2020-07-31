@@ -7,7 +7,7 @@ import urllib
 class ReportSpider(scrapy.Spider):
     name = 'report'
     allowed_domains = ['']
-    # url_to_send_message = "https://api.telegram.org/bot1149905775:AAH3E0Mvhi9d1itnCBSNY85Il5TLZqhijYU/sendMessage?chat_id=342491940&text={}" # tuchka
+    # url_to_send_message = "https://api.telegram.org/bot1149905775:AAH3E0Mvhi9d1itnCBSNY85Il5TLZqhijYU/sendMessage?chat_id=342491940&text={}"  # tuchka
     url_to_send_message = "https://api.telegram.org/bot1149905775:AAH3E0Mvhi9d1itnCBSNY85Il5TLZqhijYU/sendMessage?chat_id=211507050&text={}"  # I'm
 
     def start_requests(self):
@@ -79,7 +79,7 @@ class ReportSpider(scrapy.Spider):
             """//div[@class="priceblock"][1]//div[contains(@class, "coin")][last()]//div[contains(@class,"coin_title")]/text()"""
         ).extract())
 
-        clean_price = "Prometey:\n" + price.split(",")[0].strip()
+        clean_price = "Prometey:\nЯчмінь - " + price.split(",")[0].strip()
         result = clean_price.encode("UTF-8")
 
         yield Request(self.url_to_send_message.format(result), dont_filter=True, callback=self.ok)
