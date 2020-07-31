@@ -49,7 +49,7 @@ class ReportSpider(scrapy.Spider):
 
         clean_price = "Prometey:\nЯчмінь - " + \
             price.split(",")[0].strip().encode("UTF-8")
-        # result = clean_price
+        result = clean_price
 
         yield Request(self.url_to_send_message.format(result), dont_filter=True, callback=self.ok)
 
