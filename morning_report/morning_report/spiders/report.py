@@ -36,7 +36,7 @@ class ReportSpider(scrapy.Spider):
             '//div[@class="culture_head collapsed"]/descendant::text()').extract()
 
         clean_price = ''.join([i.strip() for i in price if i])
-        result = "Nibulon:\n"+clean_price
+        clean_price = "Nibulon:\n"+clean_price
         result = clean_price.encode("UTF-8")
 
         yield Request(self.url_to_send_message.format(result), dont_filter=True, callback=self.ok)
