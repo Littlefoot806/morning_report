@@ -7,8 +7,8 @@ import urllib
 class ReportSpider(scrapy.Spider):
     name = 'report'
     allowed_domains = ['']
-    # url_to_send_message = "https://api.telegram.org/bot1149905775:AAH3E0Mvhi9d1itnCBSNY85Il5TLZqhijYU/sendMessage?chat_id=342491940&text={}"  # tuchka
-    url_to_send_message = "https://api.telegram.org/bot1149905775:AAH3E0Mvhi9d1itnCBSNY85Il5TLZqhijYU/sendMessage?chat_id=211507050&text={}"  # I'm
+    url_to_send_message = "https://api.telegram.org/bot1149905775:AAH3E0Mvhi9d1itnCBSNY85Il5TLZqhijYU/sendMessage?chat_id=342491940&text={}"  # tuchka
+    # url_to_send_message = "https://api.telegram.org/bot1149905775:AAH3E0Mvhi9d1itnCBSNY85Il5TLZqhijYU/sendMessage?chat_id=211507050&text={}"  # I'm
 
     def start_requests(self):
         urls = [
