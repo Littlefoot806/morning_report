@@ -7,14 +7,13 @@ import urllib
 class ReportSpider(scrapy.Spider):
     name = 'report'
     allowed_domains = ['']
-    url_to_send_message = "https://api.telegram.org/bot1149905775:AAH3E0Mvhi9d1itnCBSNY85Il5TLZqhijYU/sendMessage?chat_id=342491940&text={}"  # tuchka
+    url_to_send_message = "https://api.telegram.org/bot1149905775:AAH3E0Mvhi9d1itnCBSNY85Il5TLZqhijYU/sendMessage?chat_id=-324457269&text={}"  # tuchka
     # url_to_send_message = "https://api.telegram.org/bot1149905775:AAH3E0Mvhi9d1itnCBSNY85Il5TLZqhijYU/sendMessage?chat_id=211507050&text={}"  # I'm
 
     def start_requests(self):
         urls = [
             "https://nibulon.com/data/zakupivlya-silgospprodukcii/zakupivelni-cini.html",
-            "https://obmenka.kharkov.ua/usd-uah",
-            "https://obmenka.kharkov.ua/eur-uah",
+            "https://minfin.com.ua/currency/mb/",
             "https://prometey.org.ua/zakupochny-e-tseny-na-e-levatorah/?_sft_culture=yachmin",
         ]
 
@@ -25,10 +24,8 @@ class ReportSpider(scrapy.Spider):
                 yield FormRequest(url, formdata=body, callback=self.parse_nibulon)
             elif "prometey" in url:
                 yield Request(url, callback=self.parse_prometey)
-            elif "usd-uah" in url:
-                yield Request(url, callback=self.parse_usd)
-            elif "eur-uah" in url:
-                yield Request(url, callback=self.parse_eur)
+            elif "minfin" in url:
+                yield Request(url, callback=self.parse_minfin)
 
     def parse_nibulon(self, response):
 
@@ -53,15 +50,15 @@ class ReportSpider(scrapy.Spider):
 
         yield Request(self.url_to_send_message.format(result), dont_filter=True, callback=self.ok)
 
-    def parse_usd(self, response):
+    def parse_minfin(self, response):
 
         # uah-usd
         buy = response.xpath(
-            """//li[@class="pair__block"][1]//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-num')]/text()"""
+            """//table[@class="mb-table-currency"]/tbody/tr[1]/td[2]/text()"""
         ).extract_first()
 
         sell = response.xpath(
-            """//li[@class="pair__block"][2]//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-num')]/text()"""
+            """//table[@class="mb-table-currency"]/tbody/tr[2]/td[2]/text()"""
         ).extract_first()
 
         result = "UAH-USD\nПокупка: {buy}\nПродажа: {sell}".format(
@@ -69,15 +66,13 @@ class ReportSpider(scrapy.Spider):
         result = urllib.quote(result)
         yield Request(self.url_to_send_message.format(result), dont_filter=True, callback=self.ok)
 
-    def parse_eur(self, response):
-
         # uah-eur
         buy = response.xpath(
-            """//li[@class="pair__block"][1]//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-num')]/text()"""
+            """//table[@class="mb-table-currency"]/tbody/tr[1]/td[3]/text()"""
         ).extract_first()
 
         sell = response.xpath(
-            """//li[@class="pair__block"][2]//div[contains(@class, 'block-retail')]/div[contains(@class, 'block-num')]/text()"""
+            """//table[@class="mb-table-currency"]/tbody/tr[2]/td[3]/text()"""
         ).extract_first()
 
         result = "UAH-EUR\nПокупка: {buy}\nПродажа: {sell}".format(
